@@ -6,28 +6,31 @@ function output = stereoMatching(leftImg, rightImg)
     EXTEND = (WIN_SIZE-1)/2;
     
     % Convert the images to image matrix
-    leftImgMatrix = imread(leftImg);
-    rightImgMatrix = imread(rightImg);
+    leftImgMatrix = imread(leftImg)
+    rightImgMatrix = imread(rightImg)
     
-    % Convert the images to grayscale
-    lleft = rgb2gray(leftImgMatrix);
-    lright = rgb2gray(rightImgMatrix);
-    
+   % Convert the images to grayscale
+    lleft = rgb2gray(left)
+    lright = rgb2gray(right)    
     % Get the important dimensions
-    dim = size(lleft);
-    Nx = dim(2);
-    Ny = dim(1);
+    dim_rgb = size(leftImgMatrix)
+    Nx = dim_rgb(2)
+    Ny = dim_rgb(1)
+    
+   
+    
+    
     
     % Initialize a disparity that has the same dimensions as left and right
-    DISPARITY = zeros(dim);
+    DISPARITY = zeros(dim)
     
     for y=1:1:Ny
         for x=1:1:Nx
             bestDisparity = 0;
             bestNCC = 0; % Lowest NCC score
             for disp = 1:1:DISPARITY_RANGE
-                Patch1 = lleft(y-EXTEND:y+EXTEND,x-disp-EXTEND:x-disp+EXTEND);
-                Patch2 = lright(y-EXTEND:y+EXTEND,x-disp-EXTEND:x-disp+EXTEND);
+                Patch1 = lleft(y-EXTEND:y+EXTEND,x-disp-EXTEND:x-disp+EXTEND)
+                Patch2 = lright(y-EXTEND:y+EXTEND,x-disp-EXTEND:x-disp+EXTEND)
                 currNCC = NCC(Patch1, Patch2)
                 if(currNCC > bestNCC)
                     bestNCC = currNCC;

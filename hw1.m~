@@ -6,5 +6,10 @@ segIm_3 = skySegmentation('images/detectSky3.bmp');
 figure(1)
 imagesc(segIm_1)
 figure(2)
-imagesc(seg
+imagesc(segIm_2)
 figure(3)
+imagesc(segIm_3)
+
+stereoIm_1 = 
+stereoIm_2
+stereoIm_3
