@@ -1,0 +1,64 @@
+function output = skySegmentation(image)
+
+    % Convert the image to an image matrix
+    imageMatrix = imread('images/detectSky1.bmp');
+    
+    % Set our thresholds
+    R_MIN = 0;
+    R_MAX = 100;
+    G_MIN = 1;
+    G_MAX = 150;
+    B_MIN = 100;
+    B_MAX = 255;
+    
+    % Get the dimensions of the image
+    image_dim = size(imageMatrix)
+    image_width = image_dim(1)
+    image_height = image_dim(2)
+    
+    % Initialize another image of the same size as the original
+    SEGMENT = zeros(size(imageMatrix));
+    
+    
+     
+    % Iterate through the image
+    for pixel=1:1:size(imageMatrix)(1)
+    
+        % If the pixel values are right, write a (255,255,255) to that
+        % pixel
+        red = imageMatrix(pixel,1);
+        green = imageMatrix(pixel,2);
+        blue = imageMatrix(pixel,3);
+        
+        % Initialize variables to check the threshold of each color channel
+        redThreshMet = 0;
+        greenThreshMet = 0;
+        blueThreshMet = 0;
+        
+        % Check the color channels to see if they meet their thresholds
+        if(R_MIN <= red <= R_MAX)
+            redThreshMet = 1;
+        end
+        
+        if(G_MIN <= green <= G_MAX)
+            greenThreshMet = 1;
+        end
+        
+        if(B_MIN <= blue <= B_MAX)
+            blueThreshMet = 1;
+        end
+        
+        % If all the thresholds are met, then change the pixel to white
+        if(redThreshMet & greenThreshMet & blueThreshMet)
+            SEGMENT(pixel) = [255,255,255];
+        end
+        
+    end
+    
+    % Print the image
+    image(SEGMENT);
+    
+    % Set the output
+    output = SEGMENT;
+
+end
