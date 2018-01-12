@@ -17,28 +17,73 @@ function output = stereoMatching(leftImg, rightImg)
     dim = size(lleft);
     Nx = dim(2);
     Ny = dim(1);
-    
+   
     % Initialize a disparity that has the same dimensions as left and right
     DISPARITY = zeros(dim);
     
     for y=1:1:Ny
         for x=1:1:Nx
+            
+            % Initialize the two variables to track
             bestDisparity = 0;
-            bestNCC = 0; % Lowest NCC score
+            bestNCC = 0;        % Lowest NCC score
+            
             for disp = 1:1:DISPARITY_RANGE
-                Patch1 = lleft(y-EXTEND:y+EXTEND,x-disp-EXTEND:x-disp+EXTEND);
-                Patch2 = lright(y-EXTEND:y+EXTEND,x-disp-EXTEND:x-disp+EXTEND);
-                currNCC = NCC(Patch1, Patch2)
-                if(currNCC > bestNCC)
-                    bestNCC = currNCC;
-                    bestDisparity = disp;
+            
+                top = y-EXTEND;
+                bottom = y + EXTEND;
+                left_leftside = x-EXTEND;
+                left_rightside = x+EXTEND;
+                right_leftside = x-disp-EXTEND;
+                right_rightside = x-disp+EXTEND;
+                
+                skipFlag = 0;
+                
+                if(top < 1)
+                    skipFlag = 1;
+                end
+                
+                if(bottom > Ny)
+                    skipFlag = 1;
+                end
+               
+                if(left_leftside < 1)
+                    skipFlag = 1;
+                end
+                
+                if(left_rightside > Nx)
+                    skipFlag = 1;
+                end
+                
+                if(right_leftside < 1)
+                    skipFlag = 1;
+                end
+                
+                if(right_rightside > Nx)
+                    skipFlag = 1;
+                end
+                
+                if(skipFlag == 0)
+                    % How should I move these patches?
+                    Patch1 = lleft(top:bottom,left_leftside:left_rightside);
+                    Patch2 = lright(top:bottom,right_leftside:right_rightside);
+
+                    % Calculate the NCC for this iteration
+                    currNCC = NCC(Patch1, Patch2);
+
+                    % If we have found a better NCC score
+                    if(currNCC > bestNCC)
+                        bestNCC = currNCC;      % Replace the old scores
+                        bestDisparity = disp;
+                    end
                 end
             end
-            DISPARITY(y,x) = bestDisparity;
+            
+            DISPARITY(y,x) = bestDisparity; % Get the best disparity
         end
     end
     
-    output = DISPARITY
+    output = DISPARITY;
 end
 
 % Take random pixel (x,y), same horizontal line, got to the same x location, but search in a small range

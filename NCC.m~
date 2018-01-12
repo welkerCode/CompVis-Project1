@@ -1,0 +1,18 @@
+function output = NCC(leftPatch, rightPatch)
+
+    % Handle the numerator
+    num = leftPatch .* rightPatch
+    
+    % Handle the denominator
+    
+    leftColSum = sum(leftPatch)
+    rightColSum = sum(rightPatch)
+    leftSum = sum(leftColSum)
+    rightSum = sum(rightColSum)
+    
+    den = 
+    
+    
+    % Divide them out
+    output = 0
+end
