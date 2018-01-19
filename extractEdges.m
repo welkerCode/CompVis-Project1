@@ -2,6 +2,7 @@
 
 % Initialize a few variables
 LINE_SET = {};
+LINE_NUM = 0;
 ITERS = 0;
 TOTAL_NO_ITERS = 10000;
 MAX_PAIR_DISTANCE = 100;
@@ -21,13 +22,16 @@ EDGE_SET = [];
 for row = 1:1:height
     for col = 1:1:width
         if(iedge(row,col) == 1)
-            EDGE_SET = concatSets(EDGE_SET, [row, col]);
+            EDGE_SET = [EDGE_SET; row, col];
         end
     end
 end
 
+EDGE_SET_DIM = size(EDGE_SET);
+EDGE_SET_SIZE = EDGE_SET_DIM(1);
+
 % Keep the iterations going until we reach our limit
-while(ITERS < TOTAL_NO_ITERS)
+while((ITERS < TOTAL_NO_ITERS) && (EDGE_SET_SIZE > 0))
     
     % Increment the iteration counter
     ITERS = ITERS + 1
@@ -73,6 +77,7 @@ while(ITERS < TOTAL_NO_ITERS)
 
     % Create a set to hold the points that fit this line
     INLIER = [];
+    INDICES_TO_REMOVE = [];
     
     % Iterate through each pixel in the set
     for pixel=1:1:total_num_pixels;
@@ -82,7 +87,8 @@ while(ITERS < TOTAL_NO_ITERS)
         
         % If that value is within the Minimum Pointline Distance
         if(est < MIN_POINTLINE_DISTANCE)
-            INLIER = concatSets(INLIER, EDGE_SET(pixel,:));
+            INLIER = [INLIER; EDGE_SET(pixel,:)];
+            INDICES_TO_REMOVE = [INDICES_TO_REMOVE, pixel];
         end
     end
     
@@ -91,14 +97,49 @@ while(ITERS < TOTAL_NO_ITERS)
     INLIER_dim = size(INLIER);
     INLIER_num = INLIER_dim(1);
     if(INLIER_num >= MIN_LINE_PIXEL_NUM);
-        LINE_SET = concatSets(LINE_SET, INLIER);
+        LINE_NUM = LINE_NUM + 1;
+        LINE_SET{LINE_NUM} = INLIER;
         
+        EDGE_SET(INDICES_TO_REMOVE, :) = [];
         % Also, if we add them to the line set, we must remove these same
         % pixels from the EDGE_SET
         
-    end    
+        %a(remove) = []
+    
+        
+    end 
+    EDGE_SET_DIM = size(EDGE_SET);
+    EDGE_SET_SIZE = EDGE_SET_DIM(1);
 end
 
 % Finally, at the end, we need to assign each line segment a random color
 % and plot them
+
+% Open a plot
+ifinal = zeros(imgsize);
+
+for line=1:1:LINE_NUM
+    newLine = LINE_SET{line};
+    randColor = rand(1,3);
+    randColor = randColor .* 255;
+    randColor = ceil(randColor);
+    %randColor = [255,255,255];
+    
+    LINE_DIM = size(line);
+    LINE_LENGTH = LINE_DIM(1);
+    
+    for curr_pixel=1:1:LINE_LENGTH
+        pixel = newLine(curr_pixel,:);
+        ifinal(pixel(1),pixel(2),:) = randColor;
+    end
+end
+
+figure(1);
+image(ifinal)
+% x[a,b]=  single dim vector
+% x[a;b] = multi dim vector
+% given indices x[indeces] = []
+% d{1} = [1]
+% d{2} = [2,4,5]
+
 

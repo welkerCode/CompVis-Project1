@@ -65,14 +65,14 @@ function output = stereoMatching(leftImg, rightImg)
                 
                 if(skipFlag == 0)
                     % How should I move these patches?
-                    Patch1 = lleft(top:bottom,left_leftside:left_rightside);
-                    Patch2 = lright(top:bottom,right_leftside:right_rightside);
+                    Patch1 = lleft(y - EXTEND:y+EXTEND,x - EXTEND:x + EXTEND);
+                    Patch2 = lright(y-EXTEND:y+EXTEND, x-disp-EXTEND:x-disp+EXTEND);
 
                     % Calculate the NCC for this iteration
                     currNCC = NCC(Patch1, Patch2);
-
+                   
                     % If we have found a better NCC score
-                    if(currNCC > bestNCC)
+                    if(currNCC >= bestNCC)
                         bestNCC = currNCC;      % Replace the old scores
                         bestDisparity = disp;
                     end

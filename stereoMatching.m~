@@ -30,50 +30,52 @@ function output = stereoMatching(leftImg, rightImg)
             
             for disp = 1:1:DISPARITY_RANGE
             
-                top = y-EXTEND
-                bottom = y + EXTEND
-                left_leftside = x-EXTEND
-                left_rightside = x+EXTEND
-                right_leftside = x-disp-EXTEND
-                right_rightside = x-disp+EXTEND
+                top = y-EXTEND;
+                bottom = y + EXTEND;
+                left_leftside = x-EXTEND;
+                left_rightside = x+EXTEND;
+                right_leftside = x-disp-EXTEND;
+                right_rightside = x-disp+EXTEND;
                 
-                
+                skipFlag = 0;
                 
                 if(top < 1)
-                    top = 1
+                    skipFlag = 1;
                 end
                 
                 if(bottom > Ny)
-                    bottom = Ny
+                    skipFlag = 1;
                 end
                
                 if(left_leftside < 1)
-                    left_leftside = 1
+                    skipFlag = 1;
                 end
                 
                 if(left_rightside > Nx)
-                    left_rightside = Nx
+                    skipFlag = 1;
                 end
                 
                 if(right_leftside < 1)
-                    right_leftside = 1
+                    skipFlag = 1;
                 end
                 
                 if(right_rightside > Nx)
-                    right_rightside = Nx
+                    skipFlag = 1;
                 end
                 
-                % How should I move these patches?
-                Patch1 = lleft(top:bottom,left_leftside:left_rightside);
-                Patch2 = lright(top:bottom,right_leftside:right_rightside);
-                
-                % Calculate the NCC for this iteration
-                currNCC = NCC(Patch1, Patch2)
-                
-                % If we have found a better NCC score
-                if(currNCC > bestNCC)
-                    bestNCC = currNCC;      % Replace the old scores
-                    bestDisparity = disp;
+                if(skipFlag == 0)
+                    % How should I move these patches?
+                    Patch1 = lleft(top:bottom,left_leftside:left_rightside);
+                    Patch2 = lright(y-EXTEND:Y+EXTEright_leftside:right_rightside);
+
+                    % Calculate the NCC for this iteration
+                    currNCC = NCC(Patch1, Patch2);
+
+                    % If we have found a better NCC score
+                    if(currNCC > bestNCC)
+                        bestNCC = currNCC;      % Replace the old scores
+                        bestDisparity = disp;
+                    end
                 end
             end
             
@@ -81,7 +83,7 @@ function output = stereoMatching(leftImg, rightImg)
         end
     end
     
-    output = DISPARITY
+    output = DISPARITY;
 end
 
 % Take random pixel (x,y), same horizontal line, got to the same x location, but search in a small range

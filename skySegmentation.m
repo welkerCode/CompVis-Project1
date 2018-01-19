@@ -3,12 +3,36 @@ function output = skySegmentation(image)
     % Convert the image to an image matrix
     imageMatrix = imread(image);
     
-    % Set our thresholds
-    R_MIN = 0;
-    R_MAX = 100;
-    G_MIN = 1;
-    G_MAX = 150;
-    B_MIN = 100;
+%     % Set our thresholds
+%     R_MIN = 0;
+%     R_MAX = 100;
+%     G_MIN = 1;
+%     G_MAX = 150;
+%     B_MIN = 100;
+%     B_MAX = 255;
+    
+    % This is our thresholds for detectSky1
+    R_MIN = 50;
+    R_MAX = 185;
+    G_MIN = 115;
+    G_MAX = 230;
+    B_MIN = 215;
+    B_MAX = 255;
+    
+    % This is our threshold for detectSky2
+%     R_MIN = 165;
+%     R_MAX = 250;
+%     G_MIN = 230;
+%     G_MAX = 255;
+%     B_MIN = 245;
+%     B_MAX = 255;
+
+    % This is our thresholds for detectSky3
+    R_MIN = 50;
+    R_MAX = 185;
+    G_MIN = 100;
+    G_MAX = 255;
+    B_MIN = 180;
     B_MAX = 255;
     
     % Get the dimensions of the image
