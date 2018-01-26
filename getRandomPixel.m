@@ -1,3 +1,19 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% getRandomPixel.m 
+% Author: Taylor Welker
+% Date: January 25, 2017
+%
+% This function is a helper function for 'extractEdges.m'.  It is used to
+% obtain random pixels from the EDGE_SET in order to develop a line model.
+%
+% Arguments:
+% EDGE_SET - The EDGE_SET from the 'extractEdges.m' function
+%
+% Output:
+% pixel_coord - The (x,y) values of a pixel, chosen randomly from the
+%               EDGE_SET.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function pixel_coord = getRandomPixel(EDGE_SET)
 
 edgeset_size = size(EDGE_SET); % Get the number of pixels within the EDGE_SET
